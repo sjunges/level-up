@@ -1,0 +1,12 @@
+mdp
+
+const double p;
+const int M;
+
+module round
+    s : [0..M] init M/2;
+    [] s > 0 & s < M -> p/100 + 0.01: (s'=s+1) + 1-p/100 - 0.01: (s'=s'-1);
+endmodule
+
+label "win" = s=100;
+label "done" = s > 0;

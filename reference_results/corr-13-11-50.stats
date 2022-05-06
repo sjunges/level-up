@@ -1,0 +1,1 @@
+{"subMDP-states": 15000, "subMDP-choices": 65006, "nr-valuations": 768, "macroMDP-states": 1024344, "macroMDP-choices": 2172432, "nr-template-parameters": 3, "startup-time": 2.8274651669999002}

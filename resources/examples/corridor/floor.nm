@@ -1,0 +1,89 @@
+mdp
+
+const int K = 18;
+const int M;
+const int Rms;  // Rms <= M
+const int roomnr1 = 1;
+const int roomnr2 = 2;
+const int roomnr3 = 3;
+const int roomnr4 = 4;
+const int roomnr5 = 5;
+const int roomnr6 = 6;
+const int roomnr7 = 7;
+const int roomnr8 = 8;
+const int roomnr9 = 9;
+const int roomnr10 = 10;
+const int roomnr11 = 11;
+const int roomnr12 = 12;
+const int roomnr13 = 13;
+const int roomnr14 = 14;
+const int roomnr15 = 15;
+const int roomnr16 = 16;
+const int roomnr17 = 17;
+const int roomnr18 = 18;
+
+global room : [1..K]  init M;
+global time : [0..23] init 0;
+global user : [0..floor(K/2)] init 0;
+
+module timer
+    [continue] true -> (time'=(time+1)%24);
+    [wait] true -> (time'=(time+1)%24);
+endmodule
+
+module corridor
+    rooms_visited : [0..K] init 0;
+    inside : bool init false;
+    [visit1] (inside = false) -> (inside' = true);
+    [visit2] (inside = false) -> (inside' = true);
+    [visit3] (inside = false) -> (inside' = true);
+    [visit4] (inside = false) -> (inside' = true);
+    [visit5] (inside = false) -> (inside' = true);
+    [visit6] (inside = false) -> (inside' = true);
+    [visit7] (inside = false) -> (inside' = true);
+    [visit8] (inside = false) -> (inside' = true);
+    [visit9] (inside = false) -> (inside' = true);
+    [visit10] (inside = false) -> (inside' = true);
+    [visit11] (inside = false) -> (inside' = true);
+    [visit12] (inside = false) -> (inside' = true);
+    [visit13] (inside = false) -> (inside' = true);
+    [visit14] (inside = false) -> (inside' = true);
+    [visit15] (inside = false) -> (inside' = true);
+    [visit16] (inside = false) -> (inside' = true);
+    [visit17] (inside = false) -> (inside' = true);
+    [visit18] (inside = false) -> (inside' = true);
+    [exit] (inside = true) -> (rooms_visited'=rooms_visited + 1) & (inside' = false);
+    [continue] (inside = false & room > 1) -> (room'=room - 1);
+endmodule
+
+module room1
+    visited1 : bool init false;
+    [visit1] room=roomnr1 & !visited1 ->  0.5: (visited1' = true) & (user'=floor(roomnr1/2)) + 0.3: (visited1' = true) & (user'=floor(roomnr1/3)) + 0.2: (visited1' = true) & (user'=floor(roomnr1/4));
+endmodule
+
+module room2 = room1[visited1=visited2,roomnr1=roomnr2,visit1=visit2] endmodule
+module room3 = room1[visited1=visited3,roomnr1=roomnr3,visit1=visit3] endmodule
+module room4 = room1[visited1=visited4,roomnr1=roomnr4,visit1=visit4] endmodule
+module room5 = room1[visited1=visited5,roomnr1=roomnr5,visit1=visit5] endmodule
+module room6 = room1[visited1=visited6,roomnr1=roomnr6,visit1=visit6] endmodule
+module room7 = room1[visited1=visited7,roomnr1=roomnr7,visit1=visit7] endmodule
+module room8 = room1[visited1=visited8,roomnr1=roomnr8,visit1=visit8] endmodule
+module room9 = room1[visited1=visited9,roomnr1=roomnr9,visit1=visit9] endmodule
+module room10 = room1[visited1=visited10,roomnr1=roomnr10,visit1=visit10] endmodule
+module room11 = room1[visited1=visited11,roomnr1=roomnr11,visit1=visit11] endmodule
+module room12 = room1[visited1=visited12,roomnr1=roomnr12,visit1=visit12] endmodule
+module room13 = room1[visited1=visited13,roomnr1=roomnr13,visit1=visit13] endmodule
+module room14 = room1[visited1=visited14,roomnr1=roomnr14,visit1=visit14] endmodule
+module room15 = room1[visited1=visited15,roomnr1=roomnr15,visit1=visit15] endmodule
+module room16 = room1[visited1=visited16,roomnr1=roomnr16,visit1=visit16] endmodule
+module room17 = room1[visited1=visited17,roomnr1=roomnr17,visit1=visit17] endmodule
+module room18 = room1[visited1=visited18,roomnr1=roomnr18,visit1=visit18] endmodule
+
+rewards "time"
+    true: 0;
+    [continue] true: 10;
+    [wait] true: 200;
+endrewards
+
+label "stepstates" = inside;
+label "done" = rooms_visited > Rms;

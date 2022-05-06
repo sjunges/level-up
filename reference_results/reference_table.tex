@@ -1,0 +1,51 @@
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{adjustbox}
+\usepackage[a4paper, landscape, margin=0.6in]{geometry}
+
+\title{Benchmark Result Report}
+\author{Level-Up}
+
+
+\newcommand{\mdp}{\mathcal{M}}
+\newcommand{\classmdp}{\mathcal{T}}
+\newcommand{\ntparti}{\mathbb{I}}
+\newcommand{\macro}[1]{\mu(#1)}
+
+\begin{document}
+\maketitle{}
+
+The table below contains the results.
+
+\begin{table}[h!]
+\centering
+\caption{Benchmark statistics, runtimes of the approaches, and details from levelup}
+\scalebox{0.82}{
+\begin{tabular}{lcrrrrrrr||r|rrr||rrrrr}
+Name & Inst & $|S_\mdp|$ & $|\ntparti|$ &
+$|S_{\macro{\mdp}}|$ & $|\text{A}_{\macro{\mdp}}|$   &
+$|S_\classmdp|$ & $|\text{A}_\classmdp|$ & 
+$t_\text{init}$ & $t_\text{enum}$ & $t_{50}$ & $t_{90}$ & $t_{95}$ & iter. & indrf. & $\stackrel{\text{um}}{\%}$ & $\stackrel{\text{sr}}{\%}$  & $\stackrel{\text{ir}}{\%}$ 
+\\\hline
+\textsf{corr} &	\tiny{11,10,50} &	$10^\textbf{7}$ &	$624$ &	$255576$ &	$541704$ &	$15000$ &	$65006$ &	$<1$ &	$16$ &	$3$ &	$9$ &	$13$ &	$17$ &	$14$ &	$2$ &	$67$ &	$2$\\
+\textsf{corr} &	\tiny{11,8,100} &	$10^\textbf{8}$ &	$624$ &	$254376$ &	$539040$ &	$60000$ &	$260006$ &	$<1$ &	$100$ &	$10$ &	$45$ &	$45$ &	$9$ &	$16$ &	$2$ &	$80$ &	$4$\\
+\textsf{corr} &	\tiny{11,8,200} &	$10^\textbf{8}$ &	$624$ &	$254376$ &	$539040$ &	$240000$ &	$1040006$ &	$2$ &	$689$ &	$51$ &	$313$ &	$568$ &	$17$ &	$30$ &	$0$ &	$92$ &	$4$\\
+\textsf{corr} &	\tiny{13,11,50} &	$10^\textbf{7}$ &	$768$ &	$1024344$ &	$2172432$ &	$15000$ &	$65006$ &	$3$ &	$21$ &	$8$ &	$18$ &	$25$ &	$17$ &	$17$ &	$5$ &	$36$ &	$1$\\
+\textsf{corr1} &	\tiny{17,14,75} &	$10^\textbf{8}$ &	$1056$ &	$34200$ &	$83160$ &	$33750$ &	$146256$ &	$<1$ &	$90$ &	$4$ &	$21$ &	$38$ &	$17$ &	$43$ &	$0$ &	$84$ &	$8$\\
+\textsf{corr1} &	\tiny{18,15,75} &	$10^\textbf{8}$ &	$1128$ &	$39576$ &	$96768$ &	$33750$ &	$146256$ &	$<1$ &	$98$ &	$4$ &	$38$ &	$38$ &	$17$ &	$45$ &	$0$ &	$84$ &	$8$\\
+\textsf{corr1} &	\tiny{25,20,75} &	$10^\textbf{8}$ &	$1632$ &	$89136$ &	$224160$ &	$33750$ &	$146256$ &	$<1$ &	$168$ &	$5$ &	$44$ &	$67$ &	$25$ &	$102$ &	$1$ &	$80$ &	$14$\\
+\textsf{mail} &	\tiny{10} &	$10^\textbf{9}$ &	$173857$ &	$793971$ &	$1088152$ &	$2801$ &	$3601$ &	$4$ &	$552$ &	$8$ &	$21$ &	$48$ &	$57$ &	$658$ &	$29$ &	$2$ &	$4$\\
+\textsf{mail} &	\tiny{12} &	$10^\textbf{9}$ &	$236802$ &	$1446551$ &	$2023504$ &	$2801$ &	$3601$ &	$8$ &	$738$ &	$16$ &	$43$ &	$130$ &	$97$ &	$703$ &	$42$ &	$1$ &	$2$\\
+\textsf{netw} &	\tiny{30,50} &	$10^\textbf{8}$ &	$9801$ &	$437823$ &	$437823$ &	$4026$ &	$4026$ &	$1$ &	$23$ &	$8$ &	$33$ &	$46$ &	$217$ &	$150$ &	$60$ &	$1$ &	$1$\\
+\textsf{netw} &	\tiny{30,80} &	$10^\textbf{8}$ &	$9801$ &	$437823$ &	$437823$ &	$10041$ &	$10041$ &	$1$ &	$62$ &	$8$ &	$34$ &	$48$ &	$217$ &	$150$ &	$59$ &	$3$ &	$3$\\
+\textsf{netw} &	\tiny{50,80} &	$10^\textbf{8}$ &	$9801$ &	$1025883$ &	$1025883$ &	$10041$ &	$10041$ &	$2$ &	$62$ &	$16$ &	$94$ &	$112$ &	$225$ &	$150$ &	$62$ &	$1$ &	$1$\\
+\textsf{sdn} &	\tiny{5,12,4,4} &	$10^\textbf{8}$ &	$23375$ &	$128386$ &	$128386$ &	$13506$ &	$16855$ &	$<1$ &	$62$ &	$2$ &	$20$ &	$112$ &	$289$ &	$305$ &	$2$ &	$17$ &	$11$\\
+\textsf{sdn} &	\tiny{5,8,4,4} &	$10^\textbf{8}$ &	$23375$ &	$128386$ &	$128386$ &	$2802$ &	$3455$ &	$<1$ &	$98$ &	$1$ &	$5$ &	$15$ &	$281$ &	$305$ &	$13$ &	$17$ &	$8$\\
+\textsf{sdn} &	\tiny{6,8,4,4} &	$10^\textbf{9}$ &	$126337$ &	$408227$ &	$408227$ &	$2802$ &	$3455$ &	$2$ &	$519$ &	$5$ &	$46$ &	$394$ &	$3057$ &	$305$ &	$27$ &	$7$ &	$0$\\
+
+\end{tabular}
+}
+\end{table}
+\end{document}

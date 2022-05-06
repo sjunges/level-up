@@ -1,0 +1,26 @@
+mdp
+
+const double p;
+const double q;
+const int N;
+
+module sender
+     scounter : [0..N] init 0;
+     [send] scounter <= N -> (scounter'=min(scounter+1,N));
+     [receive] true -> q/100:(scounter'=rcounter) + 1-(q/100):(scounter'=scounter);
+endmodule
+
+module channel
+    rcounter : [0..N] init 0;
+    occupied : bool init false;
+    success : bool init false;
+    [send] !occupied -> p/100: (success'=true) & (occupied'=true) + 1-(p/100): (success'=false) & (occupied'=true);
+    [receive] success & occupied -> (rcounter'=min(rcounter+1,N)) & (success'=false) & (occupied'=false);
+    [noreceive] !success & occupied ->  (success'=false) & (occupied'=false);
+endmodule
+
+rewards "time"
+    [send] true : 1;
+endrewards
+
+label "done" = scounter = N & rcounter = N;

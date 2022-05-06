@@ -1,0 +1,47 @@
+mdp
+
+const int HORIZON;
+
+global ocr1qual : [0..100] init 90;
+global ocr2qual : [0..100] init 90;
+global tp1share : [0..100] init 40;
+
+
+module mailsorting
+
+    [ocr1calibrate] true -> (ocr1qual'=min(99,floor(ocr1qual * 1.1)));
+    [ocr2calibrate] true -> (ocr2qual'=min(99,floor(ocr2qual * 1.2)));
+endmodule
+
+module typedynamics
+    [external] month < 5 -> 0.4: (tp1share'=floor(0.94*tp1share)) + 0.6: (tp1share'=ceil(1.06*tp1share));
+    [external] month >= 5 -> 0.4: (tp1share'=ceil(1.04*tp1share)) + 0.6: (tp1share'=floor(0.96*tp1share));
+endmodule
+
+module ocr1dynamics
+    [external] true -> 0.4:(ocr1qual'=floor(ocr1qual*0.9)) + 0.6:(ocr1qual'=floor(ocr1qual*0.8));
+endmodule
+
+module ocr2dynamics
+    [external] true -> 0.3:(ocr2qual'=floor(ocr2qual*0.9)) + 0.7:(ocr2qual'=floor(ocr2qual*0.8));
+endmodule
+
+module joint
+    month : [1..12] init 1;
+    tmonth : [1..HORIZON] init 1;
+    move : [0..1] init 0;
+    [external] move = 0 -> (move'=1);
+    [ocr1calibrate] move = 1 -> (move'=0) & (month'=mod(month, 12)+1) & (tmonth'=month+1);
+    [ocr2calibrate] move = 1 -> (move'=0) & (month'=mod(month, 12)+1) & (tmonth'=month+1);
+endmodule
+
+label "stepstates" = move = 0;
+rewards "runcost"
+    true: 0;
+
+    [ocr1calibrate] true : 500;
+    [ocr2calibrate] true : 500;
+endrewards
+
+
+label done = tmonth=HORIZON & move =1;

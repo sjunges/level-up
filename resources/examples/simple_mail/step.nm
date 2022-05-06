@@ -1,0 +1,45 @@
+mdp
+
+const double p;   // in percents
+const double q1;  // in percents
+const double q2;  // in percents
+
+module main
+    type : [0..2] init 0;
+    OCR : [0..2] init 0;
+    correct : [0..1] init 0;
+    [seltype] true -> p/100: (type'=1) + (100-p)/100: (type'=2) ;
+    [ocr] true -> (type=1?q1/100:q2/100): (OCR'=1) + (type=1?(100-q1)/100:(100-q2)/100): (OCR'=2);
+    [post] true -> (correct'=1);
+    [nopost] true -> (correct'=OCR-1);
+endmodule
+
+module controller
+    stage : [0..4] init 0;
+    // Stage 0: Split by type
+    // Stage 1: OCR
+    // Stage 2: Postprocessing
+    // Stage 3: Done
+    [seltype] stage = 0 -> (stage'=1);
+    [ocr] stage = 1 -> (stage'=2);
+    [post] stage = 2 -> (stage'=3);
+    [nopost] stage = 2 -> (stage'=3);
+    [deliver] stage = 3 & aux1 < aux2 -> (stage'=0);
+    [deliver] stage = 3 & aux1 >= aux2 -> (stage'=4);
+endmodule
+
+module bs
+    aux1 : [0..10] init 0;
+    [seltype]  true -> 1/10: (aux1'=1) + 1/10: (aux1'=2) + 1/10: (aux1'=3) +1/10: (aux1'=4) +
+                        1/10: (aux1'=5) + 1/10: (aux1'=6) + 1/10: (aux1'=7) +1/10: (aux1'=8) +
+                        1/10: (aux1'=9) + 1/10: (aux1'=10);
+endmodule
+
+module bs2=bs[aux1=aux2] endmodule
+
+rewards "cost"
+    [post] true : 100;
+    [deliver] correct=0 : type=1?150:200;
+endrewards
+
+label "done" =   stage = 4;

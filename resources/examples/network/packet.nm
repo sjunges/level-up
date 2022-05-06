@@ -1,0 +1,34 @@
+mdp;
+
+const int N;
+const int R;
+
+module sender
+    i : [0..N] init 1;
+    r : [0..R];
+    [send] i < N & r < R -> (r'=r+1);
+    [receiveB]
+endmodule
+
+module receiver
+    state : bool init false;
+    lastReceived : [0..N] init 0;
+    [receiveA]  !state -> (state'=true);
+    [sendB]
+endmodule
+
+module channelA
+    transmittedA: bool init false;
+    [sendA] !transmittedA -> p:(transmittedA'=true)+ 1-p:(transmittedA'=false);
+    [receiveA] transmittedA -> (transmittedA'=false);
+endmodule
+
+module channelB
+    transmittedA: bool init false;
+    [sendA] !transmittedA -> q:(transmittedA'=true)+ 1-q:(transmittedA'=false);
+    [receiveA] transmittedA -> (transmittedA'=false);
+endmodule
+
+reward "time"
+
+endreward

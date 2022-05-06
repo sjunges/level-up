@@ -1,0 +1,1 @@
+{"timing": 47.66139658300001, "p50-timing": 8.204264832999996, "p90-timing": 34.084164583, "nr_system_analyses": 56, "system_analysis_time": 30.631748503000054, "system_parametric_mc_time": 27.89443828800013, "subsystem_set_analysis_time": 1.4527835060001024, "nr_subsystem_analyses": 217, "sample_subsystem_time": 1.3291222050000613, "nr_subsystem_samples": 150}

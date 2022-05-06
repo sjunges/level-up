@@ -1,0 +1,39 @@
+mdp
+
+const double slippiness;
+const double blinding;
+const double mode;
+
+const int N;
+const int M=N;
+
+
+module initialize
+    binLocX : [1..N] init N;
+    binLocY : [1..M] init M;
+    [enter] true -> 1/(4+mode) : (binLocX'=N-3) + 1-1/(4+mode): (binLocX'=N);
+endmodule
+
+module room
+    x : [1..N] init 1;
+    y : [1..M] init 1;
+    emptied : bool init false;
+    entered : bool init false;
+
+    [enter] !entered -> (entered'=true);
+    [north] true -> 1-((slippiness+blinding)/100): (x'=max(1,x-1)) + ((slippiness+blinding)/100): (x'=x);
+    [south] true -> 1-((slippiness+blinding)/100): (x'=min(N,x+1)) + ((slippiness+blinding)/100): (x'=x);
+    [east] true -> 1-((slippiness+blinding)/100): (y'=max(1,y-1)) + ((slippiness+blinding)/100): (x'=x);
+    [west] true -> 1-((slippiness+blinding)/100): (y'=min(M,y+1)) + ((slippiness+blinding)/100): (x'=x);
+    [empty] x=binLocX & y=binLocY -> (emptied'=true);
+endmodule
+
+rewards "time"
+    [north] true : 1;
+    [south] true : 1;
+    [east] true : 1;
+    [west] true : 1;
+    [empty] true : 3;
+endrewards
+
+label "done" =  emptied & x = 1 & y = 1;

@@ -1,0 +1,30 @@
+mdp
+
+const int M;
+
+global c : [1..99];
+global d : [1..99];
+
+module channelcmng
+    [update] true -> 0.35: (c'=max(c-1,1)) + 0.35: (c'=min(c+1,99)) + 0.15: (c'=50) + 0.15: (c'=90);
+endmodule
+
+module channeldmng
+    [update] true -> 0.35: (d'=max(d-1,1)) + 0.35: (d'=min(d+1,99)) + 0.15: (d'=50) + 0.15: (d'=90);
+endmodule
+
+module protocol
+    state : [0..2];
+    file : [0..M];
+    [enter_send_file] state = 0 -> (state'=1);
+    [exit_send_file] state = 1 -> (state'=2) & (file'=file+1);
+    [update] state = 2 -> (state'=0);
+endmodule
+
+
+rewards "time"
+    true: 0;
+endrewards
+
+label "stepstates" = state = 1;
+label "done" = file=M;

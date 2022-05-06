@@ -1,0 +1,92 @@
+mdp
+
+const int N;
+const int Z;
+const int M;
+const double pA;
+const double pB;
+const double pC;
+const double pD;
+
+
+const int inBufSizeA = N;
+const int inBufSizeB = Z;
+const int inBufSizeC = Z;
+const int inBufSizeD = Z;
+const int outBufSizeA = M;
+const int outBufSizeB = M;
+const int outBufSizeC = M;
+const int outBufSizeD = N;
+const int SINKSIZE=0;
+
+
+global inBufferA : [0..inBufSizeA] init inBufSizeA;
+global inBufferB : [0..inBufSizeB] init 0;
+global inBufferC : [0..inBufSizeB] init 0;
+global inBufferD : [0..inBufSizeB] init 0;
+global inBufferAAux : [0..1] init 0;
+global inBufferBAux : [0..1] init 0;
+global inBufferCAux : [0..1] init 0;
+global inBufferDAux : [0..1] init 0;
+global sinkBuffer : [0..1] init 0;
+
+module sync
+   t : bool init false;
+   [send] !t -> (t'=!t);
+   [process] t -> (t'=!t);
+endmodule
+
+
+
+formula ACap = inBufferA < inBufSizeA-1;
+formula BCap = inBufferB < inBufSizeB-1;
+formula CCap = inBufferC < inBufSizeC-1;
+formula DCap = inBufferD < inBufSizeD-1;
+
+module A
+    outBufferA : [0..outBufSizeA] init 0;
+    [send] outBufferA > 0 & BCap  -> (outBufferA'=outBufferA-1) & (inBufferB'=inBufferB+1);
+    [send] outBufferA > 0 & CCap  -> (outBufferA'=outBufferA-1) & (inBufferC'=inBufferC+1);
+    [send] outBufferA = 0 | (!BCap & !CCap) -> true;
+    [process] inBufferAAux > 0 & outBufferA < outBufSizeA -> pA/100: (outBufferA'=outBufferA+1) & (inBufferAAux'=0) + 1-(pA/100):  (inBufferA'=inBufferA+1) & (inBufferAAux'=0);
+    [process] inBufferAAux = 0 & inBufferA > 0 & outBufferA < outBufSizeA -> pA/100: (outBufferA'=outBufferA+1) & (inBufferA'=inBufferA-1) + 1-(pA/100): true;
+    [process] inBufferA + inBufferAAux = 0 -> true;
+    [process] outBufferA = outBufSizeA -> true;
+endmodule
+
+
+module B
+    outBufferB : [0..outBufSizeB] init 0;
+    [send] outBufferB > 0 & DCap -> (outBufferB'=outBufferB-1) & (inBufferD'=inBufferD+1);
+    [send] outBufferB = 0 | !DCap -> true;
+    [process] inBufferBAux > 0 & outBufferB < outBufSizeB -> pB/100: (outBufferB'=outBufferB+1) & (inBufferBAux'=0) + 1-(pB/100):  (inBufferB'=inBufferB+1) & (inBufferBAux'=0);
+    [process] inBufferBAux = 0 & inBufferB > 0 & outBufferB < outBufSizeB -> pB/100: (outBufferB'=outBufferB+1) & (inBufferB'=inBufferB-1) + 1-(pB/100):  true;
+    [process] inBufferB + inBufferBAux = 0 -> true;
+    [process] outBufferB = outBufSizeB -> true;
+endmodule
+
+
+module C
+    outBufferC : [0..outBufSizeC] init 0;
+    [send] outBufferC > 0 & DCap -> (outBufferC'=outBufferC-1) & (inBufferDAux'=inBufferDAux+1);
+    [send] outBufferC = 0  | !DCap -> true;
+    [process] inBufferCAux > 0 & outBufferC < outBufSizeC -> pC/100: (outBufferC'=outBufferC+1) & (inBufferCAux'=0) + 1-(pC/100):  (inBufferC'=inBufferC+1) & (inBufferCAux'=0);
+    [process] inBufferCAux = 0 & inBufferC > 0 & outBufferC < outBufSizeC -> pC/100: (outBufferC'=outBufferC+1) & (inBufferC'=inBufferC-1) + 1-(pC/100):  true;
+    [process] inBufferC + inBufferCAux = 0 -> true;
+    [process] outBufferC = outBufSizeC -> true;
+endmodule
+
+module D
+    outBufferD : [0..outBufSizeD] init 0;
+    [process] inBufferDAux > 0 & outBufferD < outBufSizeD -> pD/100: (outBufferD'=outBufferD+1) & (inBufferDAux'=0) + 1-(pD/100):  (inBufferD'=inBufferD+1) & (inBufferDAux'=0);
+    [process] inBufferDAux = 0 & inBufferD > 0 & outBufferD < outBufSizeD -> pD/100: (outBufferD'=outBufferD+1) & (inBufferD'=inBufferD-1) + 1-(pD/100):  true;
+    [process] inBufferD + inBufferDAux = 0 -> true;
+    [process] outBufferD = outBufSizeD -> true;
+endmodule
+
+rewards "time"
+    [send] true : 1;
+    [process] true : 1;
+endrewards
+
+label "done" = outBufferD=N;

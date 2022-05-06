@@ -1,0 +1,19 @@
+mdp
+
+const int N;
+const double win;
+
+global i : [0..N+1] init 0;
+
+module game
+    w : [0..N] init 0;
+
+    [] i < N -> win: (w'=w+1) & (i'=i+1) + 1-win: (i'=i+1);
+    [] i = N -> 1:(i'=N+1);
+endmodule
+
+rewards "wins"
+    i=N: w;
+endrewards
+
+label "done" = i = N+1;
