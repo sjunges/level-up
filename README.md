@@ -76,8 +76,6 @@ Further options are displayed using
 python levelup-cli.py --help
 ```
 
-
-
 ## Benchmarking
 Benchmarking is supported by two scripts: 
 One to run levelup in a batch process, and one to collect the stats-files written by the benchmark tool and export them to a table.
@@ -136,7 +134,7 @@ We remark that the analysis of parametric models is completely done using the St
 
 ## Installing from source
 To install levelup on your local machine, consider the following:
-- Install Storm with Python APIs in [the usual way](https://moves-rwth.github.io/stormpy/installation.html) -- using the `master` branches.
+- Install Storm with Python APIs in [the usual way](https://moves-rwth.github.io/stormpy/installation.html) using at least version 1.7.0. 
 - Run `python setup.py install` or equivalently `pip install .`
 
 The docker container is created by using the Dockerfile. 

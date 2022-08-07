@@ -19,7 +19,7 @@ setup(
 
     packages=["levelup"],
     install_requires=[
-        "stormpy>=1.6.4"
+        "stormpy>=1.7.0"
     ],
     python_requires='>=3',
 )

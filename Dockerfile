@@ -1,4 +1,4 @@
-FROM sjunges/stormpy:cav22
+FROM movesrwth/stormpy:1.7.0
 MAINTAINER Sebastian Junges <sjunges@cs.ru.nl>
 
 RUN apt-get update && apt-get install texlive-latex-recommended texlive-latex-extra -y
@@ -6,13 +6,10 @@ RUN apt-get update && apt-get install texlive-latex-recommended texlive-latex-ex
 RUN mkdir /opt/levelup
 WORKDIR /opt/levelup
 
-ENV VIRTUAL_ENV=/opt/venv
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN python setup.py install
+RUN python3 setup.py install
 
