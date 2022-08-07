@@ -248,6 +248,7 @@ class CegarCheckerStats:
         ax.set_xlim(0)
         ax.set_ylim(0)
         ax.set_ylabel("Exp. Cum. Reward")
+        logger.info(f"Plot {model_identifier}-performance.png")
         plt.savefig(os.path.join(output_directory, f'{model_identifier}-performance.png'))
 
     def __str__(self):

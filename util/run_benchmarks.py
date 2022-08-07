@@ -82,9 +82,9 @@ def check_benchmark(benchmark, config, output_directory):
     if config.draw_performance_plot and cegar_success:
         print("\tPlot performance chart.")
         if result is not None:
-            stats.plot_timing(benchmark.description, ground_truth=result, baseline_performance=t)
+            stats.plot_timing(benchmark.description, model_identifier=benchmark.id, ground_truth=result, baseline_performance=t, output_directory=output_directory)
         else:
-            stats.plot_timing(benchmark.description)
+            stats.plot_timing(benchmark.description, model_identifier=benchmark.id, output_directory=output_directory)
 
 
 class Configuration:
@@ -189,7 +189,6 @@ CAV22_BENCHMARKS = CAV22_NETW_BENCHMARKS + CAV22_CORR_BENCHMARKS + CAV22_CORR1_B
 
 RUN_ALL_CONFIGURATION = Configuration(write_model_stats=True, run_enum=True, draw_performance_plot=True)
 RUN_ONLY_CEGAR = Configuration(write_model_stats=False, run_enum=False, draw_performance_plot=False)
-
 
 def main():
     parser = argparse.ArgumentParser(description='Run benchmarks for levelup')
