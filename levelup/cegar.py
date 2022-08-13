@@ -438,6 +438,7 @@ class CegarChecker:
         relevant_valuation_ids = set(self.hmd.valuation_id_to_state_ids.keys()) - set(self._cache.keys())
 
         for ar in AnnotatedRegion(region_bounds, relevant_valuation_ids, lower_bound, upper_bound, 0).split(valuation_weights):
+            logger.debug(f"Adding {ar} to the queue for potential refinement.")
             Q.put(ar)
         i = 0 # outer loops
         j = 0 # inner loops with macro MDP checks
@@ -469,7 +470,7 @@ class CegarChecker:
                 Q.put(reg)
 
             i = i + 1
-            if i % self._options.reassesement_iterations == 0:
+            if i % self._options.reassesement_iterations == 0 or Q.empty():
                 logger.debug("Consider system-level, shrinking global bounds...")
                 j = j + 1
                 region_to_reward_time = time.monotonic()
