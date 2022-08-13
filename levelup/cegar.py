@@ -360,7 +360,7 @@ class CegarChecker:
         if cache_val is not None:
             return cache_val
         self.stats.start_sample_step_model()
-        res = sp.model_checking(self.hmd.instantiation_builder.instantiate(self.hmd.valuations[val_id]),
+        res = sp.model_checking(self.hmd.instantiate_step_model(self.hmd.valuations[val_id]),
                           self.hmd.step_formula).at(
             self.hmd.step_parametric_model.initial_states[0])
         self._cache[val_id] = res

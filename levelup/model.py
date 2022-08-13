@@ -66,3 +66,5 @@ class HierarchicalModelDescription:
                 "nr-template-parameters": len(self.step_parametric_model.collect_all_parameters()),
                 "startup-time": self._build_time}
 
+    def instantiate_step_model(self, valuation):
+        return self.instantiation_builder.instantiate(valuation)

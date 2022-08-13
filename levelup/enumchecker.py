@@ -55,6 +55,11 @@ class SingleOutputFullInstantiationChecker:
     def stats(self):
         return self._stats
 
+    def _model_check_step_model(self, valuation):
+        model = self.hmd.instantiate_step_model(valuation)
+        assert len(model.initial_states) == 1
+        return sp.model_checking(model, self.hmd.step_formula).at(model.initial_states[0])
+
     def run(self):
         start_time = time.monotonic()
         cache = dict()
@@ -63,8 +68,7 @@ class SingleOutputFullInstantiationChecker:
             cached_result = cache.get(val_id)
             if cached_result is None:
                 valuation = self.hmd.valuations[val_id]
-                cached_result = sp.model_checking(self.hmd.instantiation_builder.instantiate(valuation), self.hmd.step_formula).at(
-                    self.hmd.step_parametric_model.initial_states[0])
+                cached_result = self._model_check_step_model(valuation)
                 logger.debug(f"For valuation {valuation}, obtain {cached_result}.")
                 cache[val_id] = cached_result
             if cached_result is not None:
@@ -110,7 +114,7 @@ class BinaryOutputFullInstantiationChecker:
                         cached_result = cache.get(val_id)
                         if cached_result is None:
                             valuation = self.hmd.valuations[val_id]
-                            cached_result = sp.model_checking(self.hmd.instantiation_builder.instantiate(valuation),
+                            cached_result = sp.model_checking(self.hmd.instantiate_step_model(valuation),
                                                               self.hmd.step_formula).at(
                                 self.hmd.step_parametric_model.initial_states[0])
                             logger.debug(f"For valuation {valuation}, obtain {cached_result}.")
