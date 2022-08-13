@@ -14,8 +14,8 @@ def method_from_string(method_str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Starter project for stormpy.')
-    parser.add_argument('--method', '-m', help="Method to use", default="CEGAR")
+    parser = argparse.ArgumentParser(description='Level-up. A prototype for verifying hierarchical MDPs.')
+    parser.add_argument('--method', '-m', choices=["CEGAR", "ITERATE"], help="Method to use", default="CEGAR")
     parser.add_argument('--system-model', '-i', help='System model file', required=True)
     parser.add_argument('--system-constants', '-ic', help="System model constant values", default="")
     parser.add_argument('--step-model', '-s', help='Step model file', required=True)

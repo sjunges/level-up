@@ -1,7 +1,10 @@
+import logging
 import time
 
 import stormpy as sp
 import stormpy.pars as spp
+
+logger = logging.getLogger(__name__)
 
 
 class HierarchicalModelDescription:
