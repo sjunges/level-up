@@ -1,4 +1,4 @@
-FROM movesrwth/stormpy:1.7.0
+FROM movesrwth/stormpy:latest
 MAINTAINER Sebastian Junges <sjunges@cs.ru.nl>
 
 RUN apt-get update && apt-get install texlive-latex-recommended texlive-latex-extra -y
@@ -11,5 +11,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN python3 setup.py install
+RUN python setup.py install
 
+# Ensure that matplotlib cache is created. 
+RUN python levelup-cli.py --help

@@ -3,7 +3,7 @@
 This repository includes a prototypical implementation of an abstraction-refinement loop for hierarchical MDPs.
 It is based on
 
-- [1] Sebastian Junges and Matthijs Spaan, *Abstraction-Refinement for Hierarchical Probabilistic Models* , CAV 2022. 
+- [1] Sebastian Junges and Matthijs Spaan, [*Abstraction-Refinement for Hierarchical Probabilistic Models*](https://doi.org/10.1007/978-3-031-13185-1_6) , CAV 2022. 
 
 #### This Readme
 
@@ -24,7 +24,7 @@ Details on how to build the docker container manually and/or how to install leve
 #### 1. Load or pull the Docker container
 First, either pull the docker container from dockerhub
 ```
-docker pull sjunges/levelup:cav22
+docker pull sjunges/levelup
 ```
 or, in case you downloaded the docker container:
 ```
@@ -36,11 +36,11 @@ see [this documentation](https://www.stormchecker.org/documentation/obtain-storm
 #### 2. Boot the container
 The following command will run the docker container (for Windows platforms, please see the documentation from the storm website).
 ```
-docker run -w /opt/levelup --rm -it --name levelup sjunges/levelup:cav22
+docker run -w /opt/levelup --rm -it --name levelup sjunges/levelup
 ```
 If you want to have a shared folder to copy results or files, it is useful to use:
 ```
-docker run --mount type=bind,source="$(pwd)",target=/data -w /opt/levelup --rm -it --name levelup sjunges/levelup:cav22
+docker run --mount type=bind,source="$(pwd)",target=/data -w /opt/levelup --rm -it --name levelup sjunges/levelup
 ```
 Files that one copies into `/data` are available on the host system in the current working directory. 
 
@@ -51,7 +51,8 @@ You can find storm/stormpy including sources at
 
 ## Running Level-up
 
-*Disclaimer*: Level-up is an early-stage academic prototype. It does not check for the validity of the inputs and may crash without helpful error messages.
+*Disclaimer*: Level-up is an early-stage academic prototype. 
+It does not check for the validity of the inputs and may crash without helpful error messages.
 
 ### Example Invocation
 To run level-up, you can use the command-line interface, e.g.,
@@ -127,7 +128,7 @@ python util/stats_to_table.py benchmark_output/ benchmark_table.tex
 ```
 
 ## Source code structure
-The most important code is in `levelup/cegar.py` where one can see the implementation of Alg. 1. 
+The most important code is in `levelup/cegar.py` where one can see the implementation of [1, Alg. 1]. 
 The enumerative baseline that we created is given in `levelup/enumchecker.py`.
 
 We remark that the analysis of parametric models is completely done using the Storm(py) API. 

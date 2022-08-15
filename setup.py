@@ -7,7 +7,7 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md'))
 
 setup(
     name="levelup",
-    version="0.1",
+    version="0.2.1",
     author="Sebastian Junges",
     author_email="sjunges@cs.ru.nl",
     maintainer="Sebastian Junges",
